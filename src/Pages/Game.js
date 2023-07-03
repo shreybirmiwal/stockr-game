@@ -52,13 +52,24 @@ class Game extends React.Component {
     if (this.state.data === null) {
       return <div>Loading...</div>;
     }
-    return(
-      <div>
+    return (
+      <div className="flex flex-row">
+        <div className="w-1/2">
           <Chart data={this.state.data} />
-          <div></div>
+        </div>
+        <div className="w-1/2 bg-red-200">
+          <Chart data={this.state.data} />
+        </div>
       </div>
-    ) ;
+    );
+    
   }
 }
 
 export default Game;
+
+
+
+
+
+
