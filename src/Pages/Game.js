@@ -24,6 +24,13 @@ const Game = () => {
   var tempHigh = -999999999;
   var tempLast = 0;
 
+  const dummyData = [
+    { date: '2023-06-01', accuracy: 80 },
+    { date: '2023-06-02', accuracy: 85 },
+    { date: '2023-06-03', accuracy: 90 },
+  ];
+  
+
   useEffect(() => {
     fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
       .then(response => response.json())
@@ -249,6 +256,8 @@ const Game = () => {
           <h1 className='p-5 text-2xl font-bold flex text-center align-middle justify-center'> Skip </h1>
         </div>
       </div>
+
+
 
     </div>
   );
