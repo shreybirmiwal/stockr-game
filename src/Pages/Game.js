@@ -4,6 +4,7 @@ import Highcharts from "highcharts";
 import more from "highcharts/highcharts-more";
 import draggable from "highcharts/modules/draggable-points";
 import HighchartsReact from "highcharts-react-official";
+import Sidebar from '../Components/Sidebar';
 
 if (typeof Highcharts === "object") {
   more(Highcharts);
@@ -24,7 +25,7 @@ const Game = () => {
   var tempLast = 0;
 
   useEffect(() => {
-    fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=HOOD&outputsize=full&apikey=JLAV6W6AQIAQREW1')
+    fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
       .then(response => response.json())
       .then(data => {
         const transformedData = transformData(data);
@@ -145,11 +146,19 @@ const Game = () => {
 
   return (
     <div>
-      <div className="flex flex-row m-8">
-        <div className="w-7/12 h-96">
+      <div className="flex flex-row">
+
+        <div className="w-2/12 h-96">
+          <Sidebar/>
+        </div>
+
+      
+        <div className="w-7/12 mt-5">
           <Chart data={data} />
         </div>
-        <div className="w-5/12 h-max">
+
+
+        <div className="w-5/12 mt-5">
           <HighchartsReact
             highcharts={Highcharts}
             ref={chartRef}
@@ -157,7 +166,7 @@ const Game = () => {
             options={{
               chart: {
                 type: 'line',
-                backgroundColor: '#ffffcc',
+                backgroundColor: '#daedf4',
               },
               xAxis: {
                 title: {
@@ -229,20 +238,18 @@ const Game = () => {
             }}
           />
         </div>
+
       </div>
-      
-      <div className='mt-60 ml-14' >
-        <div  onClick={handleSubmit} className="flex flex-row w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer">
-        <h1 className='p-5 text-2xl font-bold flex text-center align-middle justify-center'> Submit </h1>
+
+      <div className='ml-72 flex flex-row' >
+        <div  onClick={handleSubmit} className="w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer">
+          <h1 className='p-5 text-2xl font-bold flex text-center align-middle justify-center'> Submit </h1>
         </div>
-
-        {/*
-          <h1 className='p-5 text-2xl font-bold flex '> low {dataLow} </h1>
-          <h1 className='p-5 text-2xl font-bold flex '> high {dataHigh} </h1>
-          <h1 className='p-5 text-2xl font-bold flex '> last close {lastData} </h1>
-         */}
-
+        <div  onClick={handleSubmit} className="ml-5 w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer">
+          <h1 className='p-5 text-2xl font-bold flex text-center align-middle justify-center'> Skip </h1>
+        </div>
       </div>
+
     </div>
   );
 };
