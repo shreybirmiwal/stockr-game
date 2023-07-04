@@ -180,7 +180,12 @@ const Game = () => {
       enabled: false, // Hide the legend
     },
   };
-    
+  
+  if(false){
+    return (
+      <h1> You need to log in </h1>
+    );
+  }
 
   return (
     <div className='h-screen '>
