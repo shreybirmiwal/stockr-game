@@ -28,8 +28,8 @@ const Game = () => {
     { date: '2023-06-01', accuracy: 80 },
     { date: '2023-06-02', accuracy: 85 },
     { date: '2023-06-03', accuracy: 90 },
+    // Add more data points as needed
   ];
-  
 
   useEffect(() => {
     fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
@@ -149,10 +149,41 @@ const Game = () => {
 
     console.log(pointsData);
   };
+
+  const accuracyOptions = {
+    title: {
+      text: 'Accuracy',
+      style: {
+        color: '#ffffff',
+        fontSize: '24px',
+        fontWeight: 'bold',
+      },
+    },
+    xAxis: {
+      categories: dummyData.map((data) => data.date),
+    },
+    yAxis: {
+      title: {
+        text: 'Accuracy (%)',
+        style: {
+          color: '#ffffff',
+        },
+      },
+    },
+    series: [
+      {
+        name: 'Accuracy',
+        data: dummyData.map((data) => data.accuracy),
+      },
+    ],
+    legend: {
+      enabled: false, // Hide the legend
+    },
+  };
     
 
   return (
-    <div>
+    <div className='h-screen '>
       <div className="flex flex-row">
 
         <div className="w-2/12 h-96">
@@ -160,12 +191,12 @@ const Game = () => {
         </div>
 
       
-        <div className="w-7/12 mt-5">
+        <div className="w-7/12 mt-5 -ml-12">
           <Chart data={data} />
         </div>
 
 
-        <div className="w-5/12 mt-5">
+        <div className="w-5/12 pt-5 -ml-10 bg-blue-200">
           <HighchartsReact
             highcharts={Highcharts}
             ref={chartRef}
@@ -173,14 +204,21 @@ const Game = () => {
             options={{
               chart: {
                 type: 'line',
-                backgroundColor: '#daedf4',
+                backgroundColor: '#BFDBFE',
               },
               xAxis: {
                 title: {
                   text: null,
                 },
                 visible: false,
+                plotLines: [{
+                  value: 0, // The y-value where the line is positioned (in this case, at the x-axis)
+                  color: 'red', // The color of the line
+                  width: 1, // The width of the line
+                  zIndex: 3, // The layer order of the line
+                }],
               },
+              
               yAxis: {
                 title: {
                   text: null,
@@ -216,18 +254,10 @@ const Game = () => {
               ],
               dataLabels: [
                 {
-                  enabled: true,
-                  format: 'Min: {point.y}',
-                  align: 'left',
-                  x: 5,
-                  y: -5,
+                  enabled: false,
                 },
                 {
-                  enabled: true,
-                  format: 'Max: {point.y}',
-                  align: 'left',
-                  x: 5,
-                  y: 15,
+                  enabled: false,
                 },
               ],
               title: {
@@ -244,20 +274,33 @@ const Game = () => {
               },
             }}
           />
+          
+          <div className="flex justify-center mt-4">
+            <div
+              onClick={handleSubmit}
+              className="w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer"
+            >
+              <h1 className="p-5 text-2xl font-bold flex text-center align-middle justify-center">
+                Submit
+              </h1>
+            </div>
+            <div
+              onClick={handleSubmit}
+              className="ml-5 w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer"
+            >
+              <h1 className="p-5 text-2xl font-bold flex text-center align-middle justify-center">
+                Skip
+              </h1>
+            </div>
+          </div>
         </div>
 
       </div>
 
-      <div className='ml-72 flex flex-row' >
-        <div  onClick={handleSubmit} className="w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer">
-          <h1 className='p-5 text-2xl font-bold flex text-center align-middle justify-center'> Submit </h1>
-        </div>
-        <div  onClick={handleSubmit} className="ml-5 w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer">
-          <h1 className='p-5 text-2xl font-bold flex text-center align-middle justify-center'> Skip </h1>
-        </div>
+      <div className="p-5 ml-64 text-2xl font-bold flex h-80 flex flex-col">
+        <h1 className='mb-5 ml-8'> Accuracy % over time </h1>
+        <HighchartsReact highcharts={Highcharts} options={accuracyOptions} />
       </div>
-
-
 
     </div>
   );

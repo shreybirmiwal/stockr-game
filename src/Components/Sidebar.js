@@ -34,6 +34,16 @@ const Sidebar = () => {
               My Stats
             </a>
           </li>
+          <li>
+            <a
+              exact
+              to="/leaderboard"
+              activeClassName="text-blue-300"
+              className="block py-2"
+            >
+              Leaderboard 
+            </a>
+          </li>
         </ul>
       </nav>
     </div>
