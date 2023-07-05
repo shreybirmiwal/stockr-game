@@ -194,7 +194,7 @@ const Game = () => {
 
       // Assign a score value
       var score = (100 - averageDeviation).toFixed(2); // Example score calculation, adjust as needed
-      
+
       const updatedData = [...accuracyData, { Accuracy: score }];
       setAccuracyData(updatedData);
      // accuracyData.push(score)
@@ -213,7 +213,7 @@ const Game = () => {
       const yValues = pointsData.map((point) => point.y);
       chart.series[2].setData(yValues);
       chart.series[2].update({ visible: true });
-    }, 2000);
+    }, 5);
     
   };
   
