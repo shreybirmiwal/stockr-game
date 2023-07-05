@@ -5,6 +5,7 @@ import more from "highcharts/highcharts-more";
 import draggable from "highcharts/modules/draggable-points";
 import HighchartsReact from "highcharts-react-official";
 import Sidebar from '../Components/Sidebar';
+import Popup from 'reactjs-popup';
 
 if (typeof Highcharts === "object") {
   more(Highcharts);
@@ -12,6 +13,12 @@ if (typeof Highcharts === "object") {
 }
 
 const Game = () => {
+
+  const [dropDownSelected, setdropDownSelected] = useState(''); // State to track the selected option
+  const handleOptionChange = (event) => {
+    setdropDownSelected(event.target.value); // Update the selected option when it changes
+  };
+
   const [data, setData] = useState(null);
   const [dragData, setDragData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [dataHigh, setDataHigh] = useState();
@@ -24,12 +31,14 @@ const Game = () => {
   var tempHigh = -999999999;
   var tempLast = 0;
 
-  const dummyData = [
+  const accuracyData = [
     { date: '2023-06-01', accuracy: 80 },
     { date: '2023-06-02', accuracy: 85 },
     { date: '2023-06-03', accuracy: 90 },
-    // Add more data points as needed
   ];
+
+  const [PopOpen, setPopOpen] = useState(false);
+  const [accuracyPop, SetAccuracyPop] = useState(0);
 
   useEffect(() => {
     fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
@@ -121,6 +130,13 @@ const Game = () => {
     return <div>Loading...</div>;
   }
 
+  const handleNewPuzzle = () => {
+    // add to stats bar graph
+    //if add needs to play play ad
+    //close pop up
+    setPopOpen(false)
+  }
+
   const handleSubmit = async () => {
     const chart = chartRef.current.chart;
 
@@ -134,7 +150,7 @@ const Game = () => {
     const pointsData = chart.series[0].points.map((point) => ({
       x: point.x,
       y: point.y,
-      z: (point.y*onePercent)+bottom
+      z: ((point.y*onePercent)+bottom).toFixed(2)
     }));
 
     //update the solution graph
@@ -142,12 +158,27 @@ const Game = () => {
     for (var i = 0; i < percentages.length; i++) {
       percentages[i] = (percentages[i] - bottom) / onePercent;
     }
-    console.log("PERCENTAGES " + percentages)
+    console.log("ACTUAL PERCENTAGES " + percentages)
     chart.series[1].setData(percentages);
     chart.series[1].update({ visible: true });
 
+    //find difference between y values and percentages
+      // Find difference between y values and percentages
+      var sum = 0;
+      for (var i = 0; i < percentages.length; i++) {
+        var deviation = Math.abs(percentages[i] - pointsData[i].y);
+        sum += deviation;
+      }
+      var averageDeviation = sum / percentages.length;
 
-    console.log(pointsData);
+      // Assign a score value
+      var score = 100 - averageDeviation; // Example score calculation, adjust as needed
+      SetAccuracyPop(score.toFixed(2))
+
+    setTimeout(() => {
+      setPopOpen(true)
+    }, 2000);
+    
   };
 
   const accuracyOptions = {
@@ -160,7 +191,7 @@ const Game = () => {
       },
     },
     xAxis: {
-      categories: dummyData.map((data) => data.date),
+      categories: accuracyData.map((data) => data.date),
     },
     yAxis: {
       title: {
@@ -173,7 +204,7 @@ const Game = () => {
     series: [
       {
         name: 'Accuracy',
-        data: dummyData.map((data) => data.accuracy),
+        data: accuracyData.map((data) => data.accuracy),
       },
     ],
     legend: {
@@ -181,14 +212,20 @@ const Game = () => {
     },
   };
   
-  if(false){
-    return (
-      <h1> You need to log in </h1>
-    );
-  }
-
   return (
     <div className='h-screen '>
+
+      <Popup open={PopOpen} onClose={() => setPopOpen(false)} closeOnDocumentClick={false}>
+        <div className='bg-gray-800 w-60 h-44 rounded-md'>
+          <p className='font-bold flex-row flex justify-center align-middle pt-10 text-white'>
+            You scored {accuracyPop}%
+          </p>
+          <button className='block mx-auto mt-4 bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded' onClick={handleNewPuzzle}>
+            New Puzzle
+          </button>
+        </div>
+      </Popup>
+
       <div className="flex flex-row">
 
         <div className="w-2/12 h-96">
@@ -289,14 +326,24 @@ const Game = () => {
                 Submit
               </h1>
             </div>
-            <div
-              onClick={handleSubmit}
-              className="ml-5 w-56 items-center justify-center bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer"
-            >
-              <h1 className="p-5 text-2xl font-bold flex text-center align-middle justify-center">
-                Skip
-              </h1>
-            </div>
+
+            <div>
+
+      {/* Drop down menu*/}
+      <div className="ml-5 w-56">
+        <select
+          value={dropDownSelected}
+          onChange={handleOptionChange}
+          className="w-full h-full bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer p-5 text-2xl font-bold text-center"
+        >
+          <option value="">Mode</option>
+          <option value="option1">$SPY daily</option>
+          <option value="option2">Cryptos</option>
+          <option value="option2">Mega cap</option>
+        </select>
+      </div>
+    </div>
+
           </div>
         </div>
 

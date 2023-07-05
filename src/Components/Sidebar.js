@@ -3,9 +3,9 @@ import React from 'react';
 const Sidebar = () => {
   return (
     <div className="bg-gray-800 w-64 h-screen">
-      <div className="text-white text-xl font-semibold p-5"> stockr</div>
+      <div className="text-white text-2xl font-semibold p-5"> stockr</div>
       <nav>
-        <ul className="text-white p-2 ml-3">
+        <ul className="text-white p-2 ml-3 text-xl">
           <li>
             <a
               exact
@@ -16,6 +16,7 @@ const Sidebar = () => {
               Home
             </a>
           </li>
+          {/* 
           <li>
             <a
               to="/account"
@@ -44,6 +45,7 @@ const Sidebar = () => {
               Leaderboard 
             </a>
           </li>
+          */}
         </ul>
       </nav>
     </div>
