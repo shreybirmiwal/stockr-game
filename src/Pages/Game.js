@@ -49,6 +49,10 @@ const Game = () => {
   const [accuracyPop, SetAccuracyPop] = useState(0);
 
   useEffect(() => {
+    getDataInitial()
+  }, []);
+
+  const getDataInitial = async() => {
     fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
       .then(response => response.json())
       .then(data => {
@@ -58,10 +62,15 @@ const Game = () => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
-  }, []);
+  }
 
   const transformData = (apiData) => {
     const timeSeriesData = apiData['Time Series (Daily)'];
+    const randomNumber = Math.floor(Math.random() * 6001); // Generate a random number between 0 and 6000
+    const entries = Object.entries(timeSeriesData);
+    const slicedEntries = entries.slice(randomNumber);
+    const modifiedTimeSeriesData = Object.fromEntries(slicedEntries);
+        
     const transformedData = [];
     let count = 0;
 
@@ -70,9 +79,9 @@ const Game = () => {
     var firstDate;
     var secondDate;
 
-    for (const date in timeSeriesData) {
+    for (const date in modifiedTimeSeriesData) {
       if(first){
-        if (timeSeriesData.hasOwnProperty(date)) {
+        if (modifiedTimeSeriesData.hasOwnProperty(date)) {
           firstDate = new Date(date);
           first = false
           second = true
@@ -84,8 +93,8 @@ const Game = () => {
       }
       else{
       
-        if (timeSeriesData.hasOwnProperty(date)) {
-          const { '1. open': open, '2. high': high, '3. low': low, '4. close': close, '6. volume': volume } = timeSeriesData[date];
+        if (modifiedTimeSeriesData.hasOwnProperty(date)) {
+          const { '1. open': open, '2. high': high, '3. low': low, '4. close': close, '6. volume': volume } = modifiedTimeSeriesData[date];
           const formattedDate = new Date(date);
 
           if (parseFloat(low) < parseFloat(tempLow)) {
@@ -137,11 +146,19 @@ const Game = () => {
   }
 
   const handleNewPuzzle = () => {
+    const chart = chartRef.current.chart;
+    chart.series[0].setData([50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50,50])
+    chart.series[0].update({ visible: true });
+
+    chart.series[1].update({ visible: false });
+    chart.series[2].update({ visible: false });
+
+
     // add to stats bar graph
     //if add needs to play play ad
     //close pop up
+    getDataInitial()
     SetAccuracyPop(0)
-    
     setPopOpen(false)
   }
 
@@ -184,6 +201,17 @@ const Game = () => {
     setTimeout(() => {
       SetAccuracyPop(score.toFixed(2))
       setPopOpen(true)
+
+      //solution
+      chart.series[1].setData(percentages);
+      chart.series[1].update({ visible: true });
+
+      chart.series[0].update({ visible: false });
+
+      //your responce
+      const yValues = pointsData.map((point) => point.y);
+      chart.series[2].setData(yValues);
+      chart.series[2].update({ visible: true });
     }, 2000);
     
   };
@@ -299,6 +327,13 @@ const Game = () => {
                   data: [10, 10, 10, 10],
                   lineWidth: 2,
                   visible: false,
+                },
+                {
+                  name: 'Your entry',
+                  data: [10, 10, 10, 10],
+                  lineWidth: 2,
+                  visible: false,
+
                 },
               ],
               dataLabels: [
