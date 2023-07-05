@@ -7,6 +7,16 @@ import HighchartsReact from "highcharts-react-official";
 import Sidebar from '../Components/Sidebar';
 import Popup from 'reactjs-popup';
 
+{/* 
+to do:
+ - Hide labels on draggable chart
+ - stop zoom change on left side graph
+ - Add ads
+ - Fix accuracy chart being weird
+ - handleNewPuzzle
+*/}
+
+
 if (typeof Highcharts === "object") {
   more(Highcharts);
   draggable(Highcharts);
@@ -20,10 +30,8 @@ const Game = () => {
   };
 
   const [data, setData] = useState(null);
-  const [dragData, setDragData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
   const [dataHigh, setDataHigh] = useState();
   const [dataLow, setDataLow] = useState();
-  const [lastData, setLastData] = useState();
   const [futureData, setFutureData] = useState()
   const chartRef = useRef(null);
 
@@ -110,8 +118,6 @@ const Game = () => {
     transformedData.push(highPoint);
     transformedData.push(lowPoint);
 
-    setLastData(parseFloat(tempLast))
-    setDragData([parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast),parseFloat(tempLast), parseFloat(tempLast)])
     setDataLow(tempLow)
     setDataHigh(tempHigh)
 
@@ -134,6 +140,8 @@ const Game = () => {
     // add to stats bar graph
     //if add needs to play play ad
     //close pop up
+    SetAccuracyPop(0)
+    
     setPopOpen(false)
   }
 
@@ -163,7 +171,6 @@ const Game = () => {
     chart.series[1].update({ visible: true });
 
     //find difference between y values and percentages
-      // Find difference between y values and percentages
       var sum = 0;
       for (var i = 0; i < percentages.length; i++) {
         var deviation = Math.abs(percentages[i] - pointsData[i].y);
@@ -173,9 +180,9 @@ const Game = () => {
 
       // Assign a score value
       var score = 100 - averageDeviation; // Example score calculation, adjust as needed
-      SetAccuracyPop(score.toFixed(2))
 
     setTimeout(() => {
+      SetAccuracyPop(score.toFixed(2))
       setPopOpen(true)
     }, 2000);
     
