@@ -24,7 +24,7 @@ if (typeof Highcharts === "object") {
 
 const Game = () => {
 
-  const [dropDownSelected, setdropDownSelected] = useState(''); // State to track the selected option
+  const [dropDownSelected, setdropDownSelected] = useState('Option 1'); // State to track the selected option
   const handleOptionChange = (event) => {
     setdropDownSelected(event.target.value); // Update the selected option when it changes
   };
@@ -135,8 +135,8 @@ const Game = () => {
     future20 = future20.map(item => item.close);
     setFutureData(future20)
 
-    console.log("DATA : " + transformedData)
-    console.log("FUTURE : " + future20)
+    //console.log("DATA : " + transformedData)
+    //console.log("FUTURE : " + future20)
     return transformedData;
   };
 
@@ -197,6 +197,8 @@ const Game = () => {
 
       // Assign a score value
       var score = 100 - averageDeviation; // Example score calculation, adjust as needed
+      const currentDate = new Date();
+      accuracyData.push({date: currentDate.toString(), accuracy: 2})
 
     setTimeout(() => {
       SetAccuracyPop(score.toFixed(2))
@@ -269,11 +271,16 @@ const Game = () => {
 
       
         <div className="w-7/12 mt-5 -ml-12">
-          <Chart data={data} />
+          <Chart data={data} 
+              mouseMoveEvent={false}
+              panEvent={false}
+              zoomEvent={false}
+              clamp={false}
+            />
         </div>
 
 
-        <div className="w-5/12 pt-5 -ml-10 bg-blue-200">
+        <div className="w-5/12 pt- bg-blue-200">
           <HighchartsReact
             highcharts={Highcharts}
             ref={chartRef}
@@ -378,7 +385,6 @@ const Game = () => {
           onChange={handleOptionChange}
           className="w-full h-full bg-gray-200 hover:bg-gray-400 rounded-md shadow-md cursor-pointer p-5 text-2xl font-bold text-center"
         >
-          <option value="">Mode</option>
           <option value="option1">$SPY daily</option>
           <option value="option2">Cryptos</option>
           <option value="option2">Mega cap</option>

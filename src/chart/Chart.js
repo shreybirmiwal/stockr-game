@@ -46,12 +46,14 @@ class CandleStickStockScaleChartWithVolumeBarV3 extends React.Component {
 				xExtents={xExtents}
                 showTicks={false} 
                 showDomain={false}
-                panEvent={false}
-                zoomEvent={false}
+				mouseMoveEvent={false}
+				panEvent={false}
+				zoomEvent={false}
+				clamp={false}
 			>
 
 				<Chart id={1} height={400} yExtents={d => [d.high, d.low]} >
-					<YAxis axisAt="right" orient="right" ticks={5} showTicks={false} />
+					<YAxis axisAt="right" orient="right" ticks={5} showTicks={false} zoomEnabled={false}/>
 					<XAxis axisAt="bottom" orient="bottom" showTicks={false}/>
 					<CandlestickSeries />
 				</Chart>
