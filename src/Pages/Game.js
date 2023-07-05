@@ -6,6 +6,7 @@ import draggable from "highcharts/modules/draggable-points";
 import HighchartsReact from "highcharts-react-official";
 import Sidebar from '../Components/Sidebar';
 import Popup from 'reactjs-popup';
+import AccuracyChart from '../Components/AccuracyChart';
 
 {/* 
 to do:
@@ -39,14 +40,10 @@ const Game = () => {
   var tempHigh = -999999999;
   var tempLast = 0;
 
-  const accuracyData = [
-    { date: '2023-06-01', accuracy: 80 },
-    { date: '2023-06-02', accuracy: 85 },
-    { date: '2023-06-03', accuracy: 90 },
-  ];
 
   const [PopOpen, setPopOpen] = useState(false);
   const [accuracyPop, SetAccuracyPop] = useState(0);
+  const [accuracyData, setAccuracyData] = useState([])
 
   useEffect(() => {
     getDataInitial()
@@ -101,7 +98,7 @@ const Game = () => {
             tempLow = parseFloat(low);
           }
           if (parseFloat(high) > parseFloat(tempHigh)) {
-            console.log("NEW HIGH " + high + " temphigh: " + tempHigh)
+            //console.log("NEW HIGH " + high + " temphigh: " + tempHigh)
             tempHigh = parseFloat(high);
           }
 
@@ -196,12 +193,14 @@ const Game = () => {
       var averageDeviation = sum / percentages.length;
 
       // Assign a score value
-      var score = 100 - averageDeviation; // Example score calculation, adjust as needed
-      const currentDate = new Date();
-      accuracyData.push({date: currentDate.toString(), accuracy: 2})
+      var score = (100 - averageDeviation).toFixed(2); // Example score calculation, adjust as needed
+      
+      const updatedData = [...accuracyData, { Accuracy: score }];
+      setAccuracyData(updatedData);
+     // accuracyData.push(score)
 
     setTimeout(() => {
-      SetAccuracyPop(score.toFixed(2))
+      SetAccuracyPop(score)
       setPopOpen(true)
 
       //solution
@@ -216,37 +215,6 @@ const Game = () => {
       chart.series[2].update({ visible: true });
     }, 2000);
     
-  };
-
-  const accuracyOptions = {
-    title: {
-      text: 'Accuracy',
-      style: {
-        color: '#ffffff',
-        fontSize: '24px',
-        fontWeight: 'bold',
-      },
-    },
-    xAxis: {
-      categories: accuracyData.map((data) => data.date),
-    },
-    yAxis: {
-      title: {
-        text: 'Accuracy (%)',
-        style: {
-          color: '#ffffff',
-        },
-      },
-    },
-    series: [
-      {
-        name: 'Accuracy',
-        data: accuracyData.map((data) => data.accuracy),
-      },
-    ],
-    legend: {
-      enabled: false, // Hide the legend
-    },
   };
   
   return (
@@ -399,7 +367,7 @@ const Game = () => {
 
       <div className="p-5 ml-64 text-2xl font-bold flex h-80 flex flex-col">
         <h1 className='mb-5 ml-8'> Accuracy % over time </h1>
-        <HighchartsReact highcharts={Highcharts} options={accuracyOptions} />
+        <AccuracyChart data={accuracyData}/>
       </div>
 
     </div>
