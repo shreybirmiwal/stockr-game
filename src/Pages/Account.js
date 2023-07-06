@@ -1,48 +1,39 @@
-import React from 'react'
-import GoogleButton from 'react-google-button'
-import { UserAuth } from '../context/AuthContext'
-import Sidebar from '../Components/Sidebar'
+import React, { useState } from 'react';
+import { UserAuth } from '../context/AuthContext';
+import Sidebar from '../Components/Sidebar';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import LoginComp from '../Components/LoginComp';
+import AccountComp from '../Components/AccountComp';
 
 function Account() {
-    const {googleSignIn, user, logOut} = UserAuth()
-    
-    const handleGoogleSignIn = async () => {
-        try{
-            await googleSignIn()
-        } catch ( error ){
-            console.log(error)
-        }
-    }
-    const handleSignOut = async () => {
-        try {
-          await logOut()
-        } catch (error) {
-          console.log(error)
-        }
-    }
+  const { user } = UserAuth();
 
-    return (
+
+
+  return (
     <div>
-        <div className="flex flex-row">
-
-            <div className="w-2/12 h-96">
-            <Sidebar/>
-            </div>
-
-
-            <div className="w-7/12 mt-5 -ml-12">
-                {user?.displayName ? (
-                    <button onClick={handleSignOut}>Logout</button>
-                ) : (
-                    <div>
-                        <GoogleButton onClick={handleGoogleSignIn}/>
-                    </div>
-                )}
-            </div>
-
+      <div className="flex flex-row">
+        <div>
+          <Sidebar />
         </div>
+
+        <div className="flex flex-col items-center justify-center w-full">
+          {user?.displayName ? (
+                <div className="flex flex-col items-center justify-center h-96">
+                    <AccountComp/>
+                </div>
+          ) : (
+            <div className="flex flex-col items-center justify-center h-96">
+              <LoginComp/>
+            </div>
+          )}
+        </div>
+      </div>
+      
     </div>
-    )
+  );
 }
 
-export default Account
+export default Account;
