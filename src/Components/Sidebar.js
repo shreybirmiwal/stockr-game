@@ -8,33 +8,35 @@ const Sidebar = () => {
         <ul className="text-white p-2 ml-3 text-xl">
           <li>
             <a
-              exact
-              to="/"
+              href='/'
               activeClassName="text-blue-300"
               className="block py-2"
             >
               Home
             </a>
           </li>
-          {/* 
+           
           <li>
             <a
-              to="/account"
+              href='/predictions'
+              activeClassName="text-blue-300"
+              className="block py-2"
+            >
+              Blitz Predictions
+            </a>
+          </li>
+          
+          <li>
+            <a
+              href="/account"
               activeClassName="text-blue-300"
               className="block py-2"
             >
               Account
             </a>
           </li>
-          <li>
-            <a
-              to="/my-stats"
-              activeClassName="text-blue-300"
-              className="block py-2"
-            >
-              My Stats
-            </a>
-          </li>
+
+          {/*
           <li>
             <a
               exact
