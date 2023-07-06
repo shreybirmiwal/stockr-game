@@ -4,13 +4,20 @@ import { UserAuth } from '../context/AuthContext'
 import Sidebar from '../Components/Sidebar'
 
 function Account() {
-    const {googleSignIn} = UserAuth()
+    const {googleSignIn, user, logOut} = UserAuth()
     
     const handleGoogleSignIn = async () => {
         try{
             await googleSignIn()
         } catch ( error ){
             console.log(error)
+        }
+    }
+    const handleSignOut = async () => {
+        try {
+          await logOut()
+        } catch (error) {
+          console.log(error)
         }
     }
 
@@ -24,7 +31,13 @@ function Account() {
 
 
             <div className="w-7/12 mt-5 -ml-12">
-                <GoogleButton onClick={handleGoogleSignIn}/>
+                {user?.displayName ? (
+                    <button onClick={handleSignOut}>Logout</button>
+                ) : (
+                    <div>
+                        <GoogleButton onClick={handleGoogleSignIn}/>
+                    </div>
+                )}
             </div>
 
         </div>
