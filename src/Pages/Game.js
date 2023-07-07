@@ -17,6 +17,7 @@ to do:
  - Add ads
  - Fix accuracy chart being weird
  - handleNewPuzzle
+ KEY: OHDIDWSOI7Y8LM3M
 */}
 
 

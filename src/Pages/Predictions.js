@@ -2,7 +2,7 @@ import React from 'react'
 import Sidebar from '../Components/Sidebar'
 import { UserAuth } from '../context/AuthContext';
 import LoginComp from '../Components/LoginComp'
-import MarketOpenCountdown from '../Components/MarketOpenCountdown';
+import BlitzGame from './BlitzGame';
 
 function Predictions() {
   const { user } = UserAuth();
@@ -14,21 +14,14 @@ function Predictions() {
           <Sidebar />
         </div>
 
-        <div className="flex flex-col items-center justify-center w-full">
-          {user?.displayName ? (
-                <div>
-                    
-
-                  <MarketOpenCountdown/>
-
-
-                </div>
+          {user?.displayName ? (                    
+              <BlitzGame/>
           ) : (
-            <div className="flex flex-col items-center justify-center h-96">
+            <div className="flex flex-col items-center justify-center w-full">
               <LoginComp message={"Login to access Blitz"}/>
             </div>
           )}
-        </div>
+
       </div>
       
     </div>
