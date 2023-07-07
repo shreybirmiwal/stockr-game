@@ -2,6 +2,7 @@ import React from 'react'
 import Sidebar from '../Components/Sidebar'
 import { UserAuth } from '../context/AuthContext';
 import LoginComp from '../Components/LoginComp'
+import MarketOpenCountdown from '../Components/MarketOpenCountdown';
 
 function Predictions() {
   const { user } = UserAuth();
@@ -17,8 +18,8 @@ function Predictions() {
           {user?.displayName ? (
                 <div>
                     
-                    
 
+                  <MarketOpenCountdown/>
 
 
                 </div>
