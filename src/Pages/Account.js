@@ -1,16 +1,12 @@
 import React, { useState } from 'react';
 import { UserAuth } from '../context/AuthContext';
 import Sidebar from '../Components/Sidebar';
-import { ToastContainer, toast } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
 
 import LoginComp from '../Components/LoginComp';
 import AccountComp from '../Components/AccountComp';
 
 function Account() {
   const { user } = UserAuth();
-
-
 
   return (
     <div>
@@ -26,7 +22,7 @@ function Account() {
                 </div>
           ) : (
             <div className="flex flex-col items-center justify-center h-96">
-              <LoginComp/>
+              <LoginComp message={"Sign in/Sign up"}/>
             </div>
           )}
         </div>

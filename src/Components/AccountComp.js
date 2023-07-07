@@ -32,12 +32,11 @@ function AccountComp() {
                 
             </div>
             <button
-  onClick={handleSignOut}
-  className="bg-gradient-to-r from-pink-300 to-blue-300  p-5 w-full"
->
-  Logout
-</button>
-
+            onClick={handleSignOut}
+            className="bg-gradient-to-r from-pink-300 to-blue-300  p-5 w-full"
+            >
+            Logout
+            </button>
 
         </div>
     )

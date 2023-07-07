@@ -8,6 +8,8 @@ import Sidebar from '../Components/Sidebar';
 import Popup from 'reactjs-popup';
 import AccuracyChart from '../Components/AccuracyChart';
 
+import { UserAuth } from '../context/AuthContext';
+
 {/* 
 to do:
  - Hide labels on draggable chart
@@ -24,6 +26,7 @@ if (typeof Highcharts === "object") {
 }
 
 const Game = () => {
+  const { user } = UserAuth();
 
   const [dropDownSelected, setdropDownSelected] = useState('Option 1'); // State to track the selected option
   const handleOptionChange = (event) => {
@@ -172,8 +175,12 @@ const Game = () => {
     //if add needs to play play ad
     //close pop up
     getDataInitial()
-    SetAccuracyPop(0)
-    setPopOpen(false)
+
+    setTimeout(() => {
+      SetAccuracyPop(0)
+      setPopOpen(false)
+    }, 200)
+
   }
 
   const handleSubmit = async () => {
@@ -382,10 +389,18 @@ const Game = () => {
 
       </div>
 
-      <div className="p-5 ml-64 text-2xl font-bold flex h-80 flex flex-col">
-        <h1 className='mb-5 ml-8'> Accuracy % over time </h1>
+      <div className="p-5 ml-64 text-2xl font-bold h-80 flex flex-col">
+        <div className='flex flex-row'>
+          <h1 className='mb-5 ml-8'> Accuracy % over time </h1>
+          {!user?.displayName ? (
+            <a href='/account' className='underline ml-auto mr-12 text-blue-600 hover:text-black'> Login to start saving results </a>
+          ) : (
+            <div/>
+          )}
+          </div>
         <AccuracyChart data={accuracyData}/>
       </div>
+
 
     </div>
   );
