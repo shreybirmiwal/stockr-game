@@ -1,17 +1,20 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 import Highcharts from 'highcharts';
 import more from 'highcharts/highcharts-more';
 import draggable from 'highcharts/modules/draggable-points';
 import HighchartsReact from 'highcharts-react-official';
 import { useState } from 'react';
+import { collection, getDoc, setDoc, doc, query, updateDoc } from "firebase/firestore";
+import { UserAuth } from '../context/AuthContext';
+import { db } from '../firebase';
 
 if (typeof Highcharts === 'object') {
   more(Highcharts);
   draggable(Highcharts);
 }
 
-function BlitzChartDraw({ ticker }) {
-
+function BlitzChartDraw({ ticker, currentDate }) {
+  const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
 
   const toggleExpand = () => {
@@ -19,11 +22,25 @@ function BlitzChartDraw({ ticker }) {
   };
 
   const handleSubmit = () => {
+    const tempEg = `blitz/${currentDate}-${ticker}`; // Modify the document reference
+  
+    const userID = user.uid;
+    const yValues = chartRef.current.chart.series[0].points.map((point) => point.y);
+    yValues.push(50)
 
-  }
+    updateDoc(doc(db, tempEg), {
+      [userID]: yValues
+    })
+      .then(() => {
+        console.log('Document successfully written!');
+      })
+      .catch((error) => {
+        console.error('Error writing document:', error);
+      });
+  };
 
   const chartRef = useRef(null);
-  const currentDate = new Date().toLocaleDateString();
+
     const options = {
       chart: {
         type: 'line',
@@ -56,8 +73,8 @@ function BlitzChartDraw({ ticker }) {
         title: {
           text: "% change",
         },
-        min: -2,
-        max: 2,
+        min: -1,
+        max: 1,
         resizable: false, // Disable y-axis resizing
         plotLines: [
               ],
@@ -70,8 +87,8 @@ function BlitzChartDraw({ ticker }) {
           dragDrop: {
             draggableX: false,
             draggableY: true,
-            dragMinY: -2,
-            dragMaxY: 2,
+            dragMinY: -1,
+            dragMaxY: 1,
             dragPrecisionY: 0.01,
           },
         },{
@@ -82,6 +99,15 @@ function BlitzChartDraw({ ticker }) {
           color: 'red',
           radius: 10,
           fillColor: 'red',
+        },
+        {
+          name: 'Live data',
+          data: [],
+          lineWidth: 2,
+          dragDrop: {
+            draggableX: false,
+            draggableY: false,
+          },
         }
       ],
       
@@ -95,6 +121,31 @@ function BlitzChartDraw({ ticker }) {
         series: {},
       },
     };
+
+    useEffect(() => {
+      const tempEg = `blitz/${currentDate}-${ticker}`;
+      
+      const getActualData = async () => {
+        try {
+          const docSnap = await getDoc(doc(db, tempEg));
+          if (docSnap.exists()) {
+            const actualData = docSnap.data().actual;
+            
+            const chart = chartRef.current.chart;
+            chart.series[2].setData(actualData); // Update 'Live data' series with actualData
+    
+            console.log('Actual data:', actualData);
+            
+          } else {
+            console.log('No document exists.');
+          }
+        } catch (error) {
+          console.error('Error getting document:', error);
+        }
+      };
+    
+      getActualData();
+    }, []);
   
     return (
       <div>
@@ -104,7 +155,7 @@ function BlitzChartDraw({ ticker }) {
               <span>{ticker}</span> - <span>{currentDate}</span>
             </div>
             <div onClick={handleSubmit} className="bg-gray-800 p-5 flex flex-col w-48 ml-auto text-white hover:bg-black">
-              <h1>Lock Predictions 🔒</h1>
+              <h1>Submit/Update Predictions ⚡</h1>
             </div>
           </div>
   
@@ -122,7 +173,7 @@ function BlitzChartDraw({ ticker }) {
             className="w-full bg-yellow-400 text-black font-bold py-2 mt-10"
             onClick={toggleExpand}
           >
-            {expanded ? 'Collapse' : 'Leaderboard ⚡⬇️'}
+            {expanded ? 'Collapse' : 'Leaderboard ⬇️'}
           </button>
 
           <div>

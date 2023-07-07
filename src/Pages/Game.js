@@ -17,7 +17,7 @@ to do:
  - Add ads
  - Fix accuracy chart being weird
  - handleNewPuzzle
- KEY: OHDIDWSOI7Y8LM3M
+ KEY: OHDIDWSOI7Y8LM3M  OR D0NMFMGZNUWS914T for blitz
 */}
 
 
