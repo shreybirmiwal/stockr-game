@@ -8,7 +8,7 @@ function BlitzGame() {
       <div className="mb-2">
         <MarketOpenCountdown />
       </div>
-      <BlitzChartDraw ticker={"$SPY"} />
+      <BlitzChartDraw ticker={"$SPY"} date={"7/7/2023"} />
     </div>
   );
 }
