@@ -18,6 +18,10 @@ function BlitzChartDraw({ ticker }) {
     setExpanded(!expanded);
   };
 
+  const handleSubmit = () => {
+
+  }
+
   const chartRef = useRef(null);
   const currentDate = new Date().toLocaleDateString();
     const options = {
@@ -99,7 +103,7 @@ function BlitzChartDraw({ ticker }) {
             <div className="text-3xl font-bold mt-5">
               <span>{ticker}</span> - <span>{currentDate}</span>
             </div>
-            <div className="bg-gray-800 p-5 flex flex-col w-48 ml-auto text-white hover:bg-black">
+            <div onClick={handleSubmit} className="bg-gray-800 p-5 flex flex-col w-48 ml-auto text-white hover:bg-black">
               <h1>Lock Predictions 🔒</h1>
             </div>
           </div>
