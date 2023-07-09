@@ -1,11 +1,8 @@
 import React, { PureComponent } from 'react';
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
-
-
-
 function AccuracyChart({data}) {
-
+  console.log(data)
     return (
       <ResponsiveContainer width="100%" height="100%">
         <LineChart

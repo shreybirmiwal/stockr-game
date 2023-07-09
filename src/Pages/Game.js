@@ -7,9 +7,11 @@ import HighchartsReact from "highcharts-react-official";
 import Sidebar from '../Components/Sidebar';
 import Popup from 'reactjs-popup';
 import AccuracyChart from '../Components/AccuracyChart';
-
+import { collection, getDoc, setDoc, doc, query, updateDoc } from "firebase/firestore";
 import { UserAuth } from '../context/AuthContext';
-
+import { db } from '../firebase';
+import { auth } from '../firebase';
+import { onAuthStateChanged } from 'firebase/auth';
 {/* 
 to do:
  - Hide labels on draggable chart
@@ -44,14 +46,46 @@ const Game = () => {
   var tempHigh = -999999999;
   var tempLast = 0;
 
-
   const [PopOpen, setPopOpen] = useState(false);
   const [accuracyPop, SetAccuracyPop] = useState(0);
   const [accuracyData, setAccuracyData] = useState([])
+  const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
-    getDataInitial()
+    const fetchData = async () => {
+      getDataInitial();
+      const user = await new Promise((resolve, reject) => {
+        const unsubscribe = onAuthStateChanged(auth, (user) => {
+          unsubscribe();
+          resolve(user);
+        }, reject);
+      });
+  
+      if (user) {
+        setAuthUser(user);
+
+        const snap = await getDoc(doc(db, "stats", "users"))
+        const dataT1 = snap.data()[user.uid]
+
+        console.log("RARARARARARAR");
+        console.log(dataT1);
+        setAccuracyData(dataT1)
+
+      } else {
+        console.log("not logged in");
+        setAuthUser(null);
+      }
+    };
+  
+    fetchData();
+  
+    return () => {
+      // Cleanup function
+    };
   }, []);
+  
+
+
 
   const getDataInitial = async() => {
     fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
@@ -222,7 +256,18 @@ const Game = () => {
 
       const updatedData = [...accuracyData, { Accuracy: score }];
       setAccuracyData(updatedData);
-     // accuracyData.push(score)
+      console.log(updatedData)
+
+      if(auth.currentUser){
+        const tempEg = `stats/users`;
+        const docSnap = await getDoc(doc(db, tempEg));
+        if(docSnap.exists()){
+          updateDoc(doc(db, tempEg), {
+            [user.uid] : updatedData
+          })
+        }
+      }     
+ 
 
     setTimeout(() => {
       SetAccuracyPop(score)
