@@ -36,6 +36,7 @@ const Game = () => {
     setdropDownSelected(event.target.value); // Update the selected option when it changes
   };
 
+  const [loading, setLoading] = useState(false)
   const [data, setData] = useState(null);
   const [dataHigh, setDataHigh] = useState();
   const [dataLow, setDataLow] = useState();
@@ -64,12 +65,18 @@ const Game = () => {
       if (user) {
         setAuthUser(user);
 
-        const snap = await getDoc(doc(db, "stats", "users"))
-        const dataT1 = snap.data()[user.uid]
-
-        console.log("RARARARARARAR");
-        console.log(dataT1);
-        setAccuracyData(dataT1)
+        const snap = await getDoc(doc(db, "stats", "users"));
+        const dataT1 = snap.data()?.[user.uid];
+        
+        if (dataT1) {
+          console.log("RARARARARARAR");
+          console.log(dataT1);
+          setAccuracyData(dataT1);
+        } else {
+          console.log("Data does not exist");
+        }
+        
+      
 
       } else {
         console.log("not logged in");
@@ -88,6 +95,7 @@ const Game = () => {
 
 
   const getDataInitial = async() => {
+    setLoading(true)
     fetch('https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=IBM&outputsize=full&apikey=demo')
       .then(response => response.json())
       .then(data => {
@@ -97,6 +105,7 @@ const Game = () => {
       .catch(error => {
         console.error('Error fetching data:', error);
       });
+      setLoading(false)
   }
 
   const transformData = (apiData) => {
@@ -214,11 +223,12 @@ const Game = () => {
     setTimeout(() => {
       SetAccuracyPop(0)
       setPopOpen(false)
-    }, 200)
+    }, 2000); // Delay of 2000 milliseconds (2 seconds)
 
   }
 
   const handleSubmit = async () => {
+    if(loading) return;
     const chart = chartRef.current.chart;
 
     var onePercent = parseFloat((dataHigh - dataLow) / 100.0);
