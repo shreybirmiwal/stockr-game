@@ -47,12 +47,16 @@ function BlitzGame() {
     <div className="mb-2">
       <MarketOpenCountdown />
     </div>
-    {docs.map((doc) => (
-      <BlitzChartDraw
-        key={doc.id}
-        data={doc}
-      />
-    ))}
+
+    <div className='h-1/2 overflow-scroll'>
+      {docs.map((doc) => (
+        <BlitzChartDraw
+          key={doc.id}
+          data={doc}
+        />
+      ))}
+    </div>
+
   </div>
   );
 }

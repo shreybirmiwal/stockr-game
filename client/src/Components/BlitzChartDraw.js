@@ -149,7 +149,7 @@ function BlitzChartDraw({ data }) {
     }, []);
   
     return (
-      <div>
+      <div className='mb-16'>
         <div className="flex-grow">
           <div className="flex flex-row mb-5">
             <div className="text-3xl font-bold mt-5">
