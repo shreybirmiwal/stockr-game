@@ -13,7 +13,7 @@ if (typeof Highcharts === 'object') {
   draggable(Highcharts);
 }
 
-function BlitzChartDraw({ ticker, currentDate }) {
+function BlitzChartDraw({ data }) {
   const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
 
@@ -22,7 +22,7 @@ function BlitzChartDraw({ ticker, currentDate }) {
   };
 
   const handleSubmit = () => {
-    const tempEg = `blitz/${currentDate}-${ticker}`; // Modify the document reference
+    const tempEg = `blitz/${data.id}`; // Modify the document reference
   
     const userID = user.uid;
     const yValues = chartRef.current.chart.series[0].points.map((point) => point.y);
@@ -123,7 +123,7 @@ function BlitzChartDraw({ ticker, currentDate }) {
     };
 
     useEffect(() => {
-      const tempEg = `blitz/${currentDate}-${ticker}`;
+      const tempEg = `blitz/${data.id}`;
      
       const getActualData = async () => {
         
@@ -153,7 +153,7 @@ function BlitzChartDraw({ ticker, currentDate }) {
         <div className="flex-grow">
           <div className="flex flex-row mb-5">
             <div className="text-3xl font-bold mt-5">
-              <span>{ticker}</span> - <span>{currentDate}</span>
+              <h1>{data.id}</h1>
             </div>
             <div onClick={handleSubmit} className="bg-gray-800 p-5 flex flex-col w-48 ml-auto text-white hover:bg-black">
               <h1>Submit/Update Predictions ⚡</h1>

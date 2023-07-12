@@ -44,11 +44,16 @@ function BlitzGame() {
 
   return (
     <div className="m-10 flex flex-grow flex-col">
-      <div className="mb-2">
-        <MarketOpenCountdown />
-      </div>
-      <BlitzChartDraw ticker={"SPY"} currentDate={"2023-07-07"} />
+    <div className="mb-2">
+      <MarketOpenCountdown />
     </div>
+    {docs.map((doc) => (
+      <BlitzChartDraw
+        key={doc.id}
+        data={doc}
+      />
+    ))}
+  </div>
   );
 }
 
