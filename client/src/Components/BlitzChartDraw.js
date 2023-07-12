@@ -127,7 +127,16 @@ function BlitzChartDraw({ ticker, currentDate }) {
       
       const getActualData = async () => {
 
-
+        fetch('/api/trading_day')
+        .then(response => response.json())
+        .then(data => {
+          console.log(data); // Log the response data
+          // Continue with your code
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          // Handle error
+        });
         
         try {
           const docSnap = await getDoc(doc(db, tempEg));
