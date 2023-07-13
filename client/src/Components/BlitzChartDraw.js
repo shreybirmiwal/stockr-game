@@ -16,7 +16,6 @@ if (typeof Highcharts === 'object') {
 function BlitzChartDraw({ data }) {
   const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
-  const [userData, setUserData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -140,11 +139,19 @@ function BlitzChartDraw({ data }) {
       chart.series[2].setData(actualData); // Update 'Live data' series with actualData
       
       const currentUser = user.uid;
-      console.log("cur " + currentUser)
-      if(data.currentUser !== null){
-        setUserData(data.currentUser)
-        console.log(data.currentUser)
-      } 
+      //console.log(JSON.stringify(data))
+      //console.log("cur " + currentUser)
+
+
+      var parsedData = JSON.parse(JSON.stringify(data));
+      var userData;
+
+      if (parsedData[currentUser] !== null && parsedData[currentUser] !== undefined ) {
+        userData = parsedData[currentUser]
+        userData.pop()
+      } else {
+        userData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+      }
       
       //CHECK if market already opened
       var curDate = data.id
