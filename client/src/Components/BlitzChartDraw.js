@@ -158,11 +158,11 @@ function BlitzChartDraw({ data }) {
       var dateOnly = curDate[0] + "-"+ curDate[1] + "-" + curDate[2]
       
       var targetDate = new Date(dateOnly + 'T09:30:00-04:00'); // Combine the extracted date with the target time (9:30 am)
-      console.log("TARGET  " + targetDate)
+      //console.log("TARGET  " + targetDate)
       var currentDate = new Date(); // Get the current date and time
 
       if (currentDate > targetDate) {
-        console.log('The current time is later than the target date at 9:30 am New York time. ' + targetDate);
+        console.log('Locked because it is after market open of that day');
         //LOCK predictions
         
         const chart = chartRef.current.chart; 
@@ -180,7 +180,7 @@ function BlitzChartDraw({ data }) {
         
 
       } else {
-        console.log('The current time is not later than the target date at 9:30 am New York time.');
+        console.log('unlocked to edit cuz before market open of date.');
       }
 
 
