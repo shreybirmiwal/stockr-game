@@ -132,7 +132,7 @@ function BlitzChartDraw({ data }) {
     };
 
     useEffect(() => {
-      console.log("DATA RECIEVED ! " + data.actual)
+      //console.log("DATA RECIEVED ! " + data.actual)
       const actualData = data.actual
           
       const chart = chartRef.current.chart;
@@ -154,11 +154,12 @@ function BlitzChartDraw({ data }) {
       }
       
       //CHECK if market already opened
-      var curDate = data.id
-      var dateOnly = curDate.split('-')[0];
-
+      var curDate = (data.id).split('-')
+      var dateOnly = curDate[0] + "-"+ curDate[1] + "-" + curDate[2]
+      
+      var targetDate = new Date(dateOnly + 'T09:30:00-04:00'); // Combine the extracted date with the target time (9:30 am)
+      console.log("TARGET  " + targetDate)
       var currentDate = new Date(); // Get the current date and time
-      var targetDate = new Date(dateOnly + 'T09:30:00'); // Combine the extracted date with the target time (9:30 am)
 
       if (currentDate > targetDate) {
         console.log('The current time is later than the target date at 9:30 am New York time. ' + targetDate);
@@ -175,7 +176,7 @@ function BlitzChartDraw({ data }) {
         });
 
 
-        console.log("UPDATED")
+        //console.log("UPDATED")
         
 
       } else {

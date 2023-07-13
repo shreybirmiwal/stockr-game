@@ -19,8 +19,8 @@ function BlitzGame() {
         const documents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
         documents.reverse(); // Reverse the order of the documents
         setDocs(documents);
-        console.log("DOCS BELOW ")
-        console.log(documents);
+        //console.log("DOCS BELOW ")
+        //console.log(documents);
       } catch (error) {
         console.error('Error:', error);
       }
@@ -29,16 +29,6 @@ function BlitzGame() {
 
     fetchData()
     
-    fetch('/api/trading_day')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data); // Log the response data
-      // Continue with your code
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      // Handle error
-    });
 
   }, []);
 
