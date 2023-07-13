@@ -108,6 +108,15 @@ function BlitzChartDraw({ data }) {
             draggableX: false,
             draggableY: false,
           },
+        },
+        {
+          name: 'My prediction',
+          data: [],
+          lineWidth: 2,
+          dragDrop: {
+            draggableX: false,
+            draggableY: false,
+          },
         }
       ],
       
@@ -156,6 +165,19 @@ function BlitzChartDraw({ data }) {
 
       if (currentDate > targetDate) {
         console.log('The current time is later than the target date at 9:30 am New York time.');
+        //LOCK predictions
+        const chart = chartRef.current.chart; 
+        chart.series[3].update({
+          visible: true,
+        });
+        chart.series[0].update({
+          visible: false,
+        });
+        
+        chart.series[3].setData()
+
+        console.log("UPDATED")
+
       } else {
         console.log('The current time is not later than the target date at 9:30 am New York time.');
       }
