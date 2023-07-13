@@ -161,7 +161,7 @@ function BlitzChartDraw({ data }) {
       var targetDate = new Date(dateOnly + 'T09:30:00'); // Combine the extracted date with the target time (9:30 am)
 
       if (currentDate > targetDate) {
-        console.log('The current time is later than the target date at 9:30 am New York time.');
+        console.log('The current time is later than the target date at 9:30 am New York time. ' + targetDate);
         //LOCK predictions
         
         const chart = chartRef.current.chart; 
