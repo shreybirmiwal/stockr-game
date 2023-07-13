@@ -16,6 +16,7 @@ if (typeof Highcharts === 'object') {
 function BlitzChartDraw({ data }) {
   const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
+  const [locked, setLocked] = useState(true)
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -164,6 +165,7 @@ function BlitzChartDraw({ data }) {
       if (currentDate > targetDate) {
         console.log('Locked because it is after market open of that day');
         //LOCK predictions
+        setLocked(true)
         
         const chart = chartRef.current.chart; 
         chart.series[3].setData(userData)
@@ -180,6 +182,7 @@ function BlitzChartDraw({ data }) {
         
 
       } else {
+        setLocked(false)
         console.log('unlocked to edit cuz before market open of date.');
       }
 
@@ -193,9 +196,16 @@ function BlitzChartDraw({ data }) {
             <div className="text-3xl font-bold mt-5">
               <h1>{data.id}</h1>
             </div>
-            <div onClick={handleSubmit} className="bg-gray-600 p-3 flex flex-col w-48 ml-auto text-white hover:bg-black">
-              <h1>Submit/Update Predictions ⚡</h1>
-            </div>
+
+            {locked ? (
+                <div/>
+            ) : (
+              <div onClick={handleSubmit} className="bg-gray-600 p-3 flex flex-col w-48 ml-auto text-white hover:bg-black">
+                <h1>Submit/Update Predictions ⚡</h1>
+              </div>
+            )}
+
+
           </div>
   
           <div className="bg-blue-200 flex-grow">
