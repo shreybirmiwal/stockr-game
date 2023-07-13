@@ -16,6 +16,7 @@ if (typeof Highcharts === 'object') {
 function BlitzChartDraw({ data }) {
   const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
+  const [userData, setUserData] = useState([0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]);
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -132,30 +133,19 @@ function BlitzChartDraw({ data }) {
     };
 
     useEffect(() => {
-      const tempEg = `blitz/${data.id}`;
-     
-      const getActualData = async () => {
-        
-        try {
-          const docSnap = await getDoc(doc(db, tempEg));
-          if (docSnap.exists()) {
-            const actualData = docSnap.data().actual;
-            
-            const chart = chartRef.current.chart;
-            chart.series[2].setData(actualData); // Update 'Live data' series with actualData
-    
-            console.log('Actual data:', actualData);
-            
-          } else {
-            console.log('No document exists.');
-          }
-        } catch (error) {
-          console.error('Error getting document:', error);
-        }
-      };
-    
-      getActualData();
-
+      console.log("DATA RECIEVED ! " + data.actual)
+      const actualData = data.actual
+          
+      const chart = chartRef.current.chart;
+      chart.series[2].setData(actualData); // Update 'Live data' series with actualData
+      
+      const currentUser = user.uid;
+      console.log("cur " + currentUser)
+      if(data.currentUser !== null){
+        setUserData(data.currentUser)
+        console.log(data.currentUser)
+      } 
+      
       //CHECK if market already opened
       var curDate = data.id
       var dateOnly = curDate.split('-')[0];
@@ -166,17 +156,20 @@ function BlitzChartDraw({ data }) {
       if (currentDate > targetDate) {
         console.log('The current time is later than the target date at 9:30 am New York time.');
         //LOCK predictions
+        
         const chart = chartRef.current.chart; 
+        chart.series[3].setData(userData)
+
         chart.series[3].update({
           visible: true,
         });
         chart.series[0].update({
           visible: false,
         });
-        
-        chart.series[3].setData()
+
 
         console.log("UPDATED")
+        
 
       } else {
         console.log('The current time is not later than the target date at 9:30 am New York time.');
