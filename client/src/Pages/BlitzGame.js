@@ -17,13 +17,15 @@ function BlitzGame() {
       try {
         const snapshot = await getDocs(collection(db, 'blitz'));
         const documents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        documents.reverse(); // Reverse the order of the documents
         setDocs(documents);
         console.log("DOCS BELOW ")
-        console.log(documents)
+        console.log(documents);
       } catch (error) {
         console.error('Error:', error);
       }
     };
+    
 
     fetchData()
     
@@ -48,7 +50,7 @@ function BlitzGame() {
       <MarketOpenCountdown />
     </div>
 
-    <div className='h-1/2 overflow-scroll'>
+    <div className='h-3/6 overflow-scroll'>
       {docs.map((doc) => (
         <BlitzChartDraw
           key={doc.id}

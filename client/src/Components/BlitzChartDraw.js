@@ -146,6 +146,21 @@ function BlitzChartDraw({ data }) {
       };
     
       getActualData();
+
+      //CHECK if market already opened
+      var curDate = data.id
+      var dateOnly = curDate.split('-')[0];
+
+      var currentDate = new Date(); // Get the current date and time
+      var targetDate = new Date(dateOnly + 'T09:30:00'); // Combine the extracted date with the target time (9:30 am)
+
+      if (currentDate > targetDate) {
+        console.log('The current time is later than the target date at 9:30 am New York time.');
+      } else {
+        console.log('The current time is not later than the target date at 9:30 am New York time.');
+      }
+
+
     }, []);
   
     return (
@@ -155,7 +170,7 @@ function BlitzChartDraw({ data }) {
             <div className="text-3xl font-bold mt-5">
               <h1>{data.id}</h1>
             </div>
-            <div onClick={handleSubmit} className="bg-gray-800 p-5 flex flex-col w-48 ml-auto text-white hover:bg-black">
+            <div onClick={handleSubmit} className="bg-gray-600 p-3 flex flex-col w-48 ml-auto text-white hover:bg-black">
               <h1>Submit/Update Predictions ⚡</h1>
             </div>
           </div>
