@@ -21,7 +21,10 @@ function Leaderboard({ data }) {
               // Perform operations with 'item' here
               const item = data[key];
               var userName = findUserName(key)
-              item.unshift(userName);
+              .then((userName) => {
+                item.unshift(userName);
+              })
+
               item.unshift(key)
               tempAr.push(item)
             }
@@ -35,6 +38,7 @@ function Leaderboard({ data }) {
             const snapshot = await getDocs(collection(db, 'users'));
             snapshot.forEach(doc => {
                 if (doc.id === userUID) {
+                    console.log("FOIUND !! " + doc.data())
                   var username = doc.data().username;
                   return username;
                 }
