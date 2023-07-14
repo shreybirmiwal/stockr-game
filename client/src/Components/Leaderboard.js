@@ -12,7 +12,7 @@ function Leaderboard({ data }) {
         formatData(data)
     }, []);
 
-    const formatData = (data) => {
+    const formatData = async (data) => {
        // console.log(data)
         var tempAr = []
 
@@ -20,36 +20,29 @@ function Leaderboard({ data }) {
             if (key !== 'id' && key !== 'actual') {
               // Perform operations with 'item' here
               const item = data[key];
-              var userName = findUserName(key)
-              .then((userName) => {
-                item.unshift(userName);
-              })
 
-              item.unshift(key)
-              tempAr.push(item)
+              try {
+                const snapshot = await getDocs(collection(db, 'users'));
+                snapshot.forEach(doc => {
+                    if (doc.id === key) {
+                        var info1 = JSON.parse(JSON.stringify(doc.data()));
+                        var username = info1.username;
+                        item.unshift(username)
+                        item.unshift(key)
+                        tempAr.push(item)
+                    }
+                });
+    
+              } catch (error) {
+                console.log('Error retrieving user display name:', error);
+              }
+
             }
           }
         setListPeople(tempAr)
         console.log(tempAr);
     } 
 
-    const findUserName = async (userUID) => {
-        try {
-            const snapshot = await getDocs(collection(db, 'users'));
-            snapshot.forEach(doc => {
-                if (doc.id === userUID) {
-                    console.log("FOIUND !! " + doc.data())
-                  var username = doc.data().username;
-                  return username;
-                }
-            });
-
-          } catch (error) {
-            console.log('Error retrieving user display name:', error);
-          }
-
-        return userUID
-    }
 
   return (
     <div className='overflow-scroll h-42'>
