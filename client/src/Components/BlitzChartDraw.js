@@ -42,11 +42,12 @@ function BlitzChartDraw({ data }) {
   };
 
   const upLimit = () => {
-
-  }
+    options.yAxis.max += 0.1; // Increase the maximum value by 0.1
+  };
+  
   const downLimit = () => {
-
-  }
+    options.yAxis.min -= 0.1; // Decrease the minimum value by 0.1
+  };
 
   const chartRef = useRef(null);
 
@@ -96,8 +97,6 @@ function BlitzChartDraw({ data }) {
           dragDrop: {
             draggableX: false,
             draggableY: true,
-            dragMinY: -.5,
-            dragMaxY: .5,
             dragPrecisionY: 0.01,
           },
         },{
