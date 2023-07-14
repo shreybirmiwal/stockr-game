@@ -17,6 +17,94 @@ function BlitzChartDraw({ data }) {
   const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
   const [locked, setLocked] = useState(true)
+  const [chartOptions, setChartOptions] = useState({
+    chart: {
+      type: 'line',
+      backgroundColor: '#BFDBFE',
+      panning: false, // Disable chart panning
+      zoomType: '', // Disable chart zooming
+    },
+    title: {
+      text: null,
+    },
+    xAxis: {
+      categories: [
+        '9:30',
+        '10:00',
+        '10:30',
+        '11:00',
+        '11:30',
+        '12:00',
+        '12:30',
+        '1:00',
+        '1:30',
+        '2:00',
+        '2:30',
+        '3:00',
+        '3:30',
+        '4:00',
+      ],
+    },
+    yAxis: {
+      title: {
+        text: "% change",
+      },
+      min: -.5,
+      max: .5,
+      resizable: false, // Disable y-axis resizing
+      plotLines: [
+            ],
+    },
+    series: [
+      {
+        name: '',
+        data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+        lineWidth: 2,
+        dragDrop: {
+          draggableX: false,
+          draggableY: true,
+          dragPrecisionY: 0.01,
+        },
+      },{
+        name: 'Market Open',
+        data: [0],
+        zIndex: 1,
+        lineWidth: 4,
+        color: 'red',
+        radius: 10,
+        fillColor: 'red',
+      },
+      {
+        name: 'Live data',
+        data: [],
+        lineWidth: 2,
+        dragDrop: {
+          draggableX: false,
+          draggableY: false,
+        },
+      },
+      {
+        name: 'My prediction',
+        data: [],
+        lineWidth: 2,
+        dragDrop: {
+          draggableX: false,
+          draggableY: false,
+        },
+        visible:false
+      }
+    ],
+    
+    credits: {
+      enabled: false,
+    },
+    legend: {
+      enabled: false,
+    },
+    plotOptions: {
+      series: {},
+    },
+  })
 
   const toggleExpand = () => {
     setExpanded(!expanded);
@@ -42,103 +130,28 @@ function BlitzChartDraw({ data }) {
   };
 
   const upLimit = () => {
-    options.yAxis.max += 0.1; // Increase the maximum value by 0.1
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      yAxis: {
+        ...prevOptions.yAxis,
+        max: prevOptions.yAxis.max + 0.1,
+      },
+    }));
   };
   
   const downLimit = () => {
-    options.yAxis.min -= 0.1; // Decrease the minimum value by 0.1
+    setChartOptions((prevOptions) => ({
+      ...prevOptions,
+      yAxis: {
+        ...prevOptions.yAxis,
+        min: prevOptions.yAxis.min - 0.1,
+      },
+    }));
   };
+  
 
   const chartRef = useRef(null);
 
-    const options = {
-      chart: {
-        type: 'line',
-        backgroundColor: '#BFDBFE',
-        panning: false, // Disable chart panning
-        zoomType: '', // Disable chart zooming
-      },
-      title: {
-        text: null,
-      },
-      xAxis: {
-        categories: [
-          '9:30',
-          '10:00',
-          '10:30',
-          '11:00',
-          '11:30',
-          '12:00',
-          '12:30',
-          '1:00',
-          '1:30',
-          '2:00',
-          '2:30',
-          '3:00',
-          '3:30',
-          '4:00',
-        ],
-      },
-      yAxis: {
-        title: {
-          text: "% change",
-        },
-        min: -.5,
-        max: .5,
-        resizable: false, // Disable y-axis resizing
-        plotLines: [
-              ],
-      },
-      series: [
-        {
-          name: '',
-          data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-          lineWidth: 2,
-          dragDrop: {
-            draggableX: false,
-            draggableY: true,
-            dragPrecisionY: 0.01,
-          },
-        },{
-          name: 'Market Open',
-          data: [0],
-          zIndex: 1,
-          lineWidth: 4,
-          color: 'red',
-          radius: 10,
-          fillColor: 'red',
-        },
-        {
-          name: 'Live data',
-          data: [],
-          lineWidth: 2,
-          dragDrop: {
-            draggableX: false,
-            draggableY: false,
-          },
-        },
-        {
-          name: 'My prediction',
-          data: [],
-          lineWidth: 2,
-          dragDrop: {
-            draggableX: false,
-            draggableY: false,
-          },
-          visible:false
-        }
-      ],
-      
-      credits: {
-        enabled: false,
-      },
-      legend: {
-        enabled: false,
-      },
-      plotOptions: {
-        series: {},
-      },
-    };
 
     const setUpPage = () => {
 
@@ -178,26 +191,30 @@ function BlitzChartDraw({ data }) {
         //LOCK predictions
         setLocked(true)
         
-        chart.series[3].setData(userData)
-        chart.series[0].setData(userData)
+          const newOptions = { ...chartOptions };
+          newOptions.series[0].visible = false;
+          newOptions.series[1].visible = false;
+          newOptions.series[2].visible = true;
+          newOptions.series[3].visible = true;
 
-        chart.series[0].update({visible: false});
-        chart.series[1].update({visible: false});
-        chart.series[2].update({visible: true});
-        chart.series[3].update({visible: true});
-
+          newOptions.series[3].data = userData
+          newOptions.series[0].data = userData
+          setChartOptions(newOptions)
+      
         //0 is drag, 1 is red dot, 2 is actaul, 3 is showing previosuly submit
 
       } else {
         console.log("option 2")
-        chart.series[3].setData(userData)
-        chart.series[0].setData(userData)
-        console.log("UPDATING DATA TO " + userData)
-        
-        chart.series[0].update({visible: true,});
-        chart.series[1].update({visible: true,});
-        chart.series[2].update({visible: false,});
-        chart.series[3].update({visible: false,});
+
+        const newOptions = { ...chartOptions };
+        newOptions.series[0].visible = true;
+        newOptions.series[1].visible = true;
+        newOptions.series[2].visible = false;
+        newOptions.series[3].visible = false;
+
+        newOptions.series[3].data = userData
+        newOptions.series[0].data = userData
+        setChartOptions(newOptions)
 
         setLocked(false)
         console.log('unlocked to edit cuz before market open of date.');
@@ -247,7 +264,7 @@ function BlitzChartDraw({ data }) {
               highcharts={Highcharts}
               ref={chartRef}
               constructorType={'chart'}
-              options={options}
+              options={chartOptions}
             />
           </div>
 
