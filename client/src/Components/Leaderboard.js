@@ -1,7 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from 'react';
-import { auth } from '../firebase';
-import firebase from 'firebase/app';
+import { collection, getDocs, setDoc, doc, query, updateDoc } from "firebase/firestore";
+import { UserAuth } from '../context/AuthContext';
+import { db } from '../firebase';
 
 function Leaderboard({ data }) {
 
@@ -31,10 +32,13 @@ function Leaderboard({ data }) {
 
     const findUserName = async (userUID) => {
         try {
-            const user = await firebase.auth().getUser(userUID);
-            const displayName = user.displayName;
-            console.log(displayName);
-            return displayName
+            const snapshot = await getDocs(collection(db, 'users'));
+            snapshot.forEach(doc => {
+                if (doc.id === userUID) {
+                  var username = doc.data().username;
+                  return username;
+                }
+            });
 
           } catch (error) {
             console.log('Error retrieving user display name:', error);
