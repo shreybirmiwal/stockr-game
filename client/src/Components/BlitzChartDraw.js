@@ -64,6 +64,8 @@ function BlitzChartDraw({ data }) {
           draggableX: false,
           draggableY: true,
           dragPrecisionY: 0.01,
+          dragMinY: -.5,
+          dragMaxY: .5
         },
       },{
         name: 'Market Open',
@@ -136,6 +138,17 @@ function BlitzChartDraw({ data }) {
         ...prevOptions.yAxis,
         max: prevOptions.yAxis.max + 0.1,
       },
+      series: prevOptions.series.map((series) =>
+        series.dragDrop
+          ? {
+              ...series,
+              dragDrop: {
+                ...series.dragDrop,
+                dragMaxY: series.dragDrop.dragMaxY + 0.1,
+              },
+            }
+          : series
+      ),
     }));
   };
   
@@ -146,8 +159,19 @@ function BlitzChartDraw({ data }) {
         ...prevOptions.yAxis,
         min: prevOptions.yAxis.min - 0.1,
       },
+      series: prevOptions.series.map((series) =>
+        series.dragDrop
+          ? {
+              ...series,
+              dragDrop: {
+                ...series.dragDrop,
+                dragMinY: series.dragDrop.dragMinY - 0.1,
+              },
+            }
+          : series
+      ),
     }));
-  };
+  }  
   
 
   const chartRef = useRef(null);
