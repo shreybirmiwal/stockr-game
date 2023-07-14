@@ -17,38 +17,27 @@ function BlitzGame() {
       try {
         const snapshot = await getDocs(collection(db, 'blitz'));
         const documents = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+        documents.reverse(); // Reverse the order of the documents
         setDocs(documents);
-        console.log("DOCS BELOW ")
-        console.log(documents)
+        //console.log("DOCS BELOW ")
+        //console.log(documents);
       } catch (error) {
         console.error('Error:', error);
       }
     };
+    
 
     fetchData()
     
-    fetch('/api/trading_day')
-    .then(response => response.json())
-    .then(data => {
-      console.log(data); // Log the response data
-      // Continue with your code
-    })
-    .catch(error => {
-      console.error('Error:', error);
-      // Handle error
-    });
 
   }, []);
 
 
 
   return (
-    <div className="m-10 flex flex-grow flex-col">
-    <div className="mb-2">
-      <MarketOpenCountdown />
-    </div>
+    <div className="m-10 -mt-2 mb-0 flex flex-grow flex-col overflow-hidden">
 
-    <div className='h-1/2 overflow-scroll'>
+    <div class="max-h-screen overflow-y-auto">
       {docs.map((doc) => (
         <BlitzChartDraw
           key={doc.id}

@@ -234,8 +234,8 @@ const Game = () => {
     var onePercent = parseFloat((dataHigh - dataLow) / 100.0);
     var bottom = parseFloat(dataLow);
 
-    console.log("ONE PERCENT " + onePercent)
-    console.log("BOTTOM " + bottom)
+    //console.log("ONE PERCENT " + onePercent)
+    //console.log("BOTTOM " + bottom)
 
     // Get the data from the draggable points
     const pointsData = chart.series[0].points.map((point) => ({
@@ -249,7 +249,7 @@ const Game = () => {
     for (var i = 0; i < percentages.length; i++) {
       percentages[i] = (percentages[i] - bottom) / onePercent;
     }
-    console.log("ACTUAL PERCENTAGES " + percentages)
+    //console.log("ACTUAL PERCENTAGES " + percentages)
     chart.series[1].setData(percentages);
     chart.series[1].update({ visible: true });
 
@@ -266,7 +266,7 @@ const Game = () => {
 
       const updatedData = [...accuracyData, { Accuracy: score }];
       setAccuracyData(updatedData);
-      console.log(updatedData)
+      //console.log(updatedData)
 
       if(auth.currentUser){
         const tempEg = `stats/users`;

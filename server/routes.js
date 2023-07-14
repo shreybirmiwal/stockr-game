@@ -17,7 +17,9 @@ router.get('/trading_day', (req, res) => {
 
     //marketTimeData(isoString, skipFindNext=false)
     //console.log(smc.marketTimeData("2023-09-23T19:59:00.000Z"))
-    res.json(smc.marketTimeData("2023-07-12T19:59:00.000Z"))
+    const curTime = new Date().toISOString()
+    console.log(smc.marketTimeData(curTime))
+    res.json(smc.marketTimeData(curTime))
     
 })
 
