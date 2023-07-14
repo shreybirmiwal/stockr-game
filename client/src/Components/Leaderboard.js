@@ -50,8 +50,8 @@ function Leaderboard({ data }) {
 
         {listPeople.map((item, index) => (
             <div className='bg-gray-800 text-white mt-1 p-5 grid grid-cols-3' key={index}>
-            <h1>{item[1]}</h1> {/* Replace 'Shrey Birmiwal' with the username */}
-            <h1>{((item[item.length - 1] / 100) * 100).toFixed(2)}%</h1> {/* Calculate the percentage from the last number in the array */}
+            <h1>{item[1]}</h1> 
+            <h1>{((item[item.length - 1] / 100) * 100).toFixed(2)}%</h1> 
             </div>
         ))}
 
