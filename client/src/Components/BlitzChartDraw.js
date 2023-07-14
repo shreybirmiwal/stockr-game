@@ -183,10 +183,7 @@ function BlitzChartDraw({ data }) {
       //console.log("DATA RECIEVED ! " + data.actual)
 
       const actualData = data.actual
-                
-      const chart = chartRef.current.chart;
-      chart.series[2].setData(actualData); // Update 'Live data' series with actualData
-
+      
       const currentUser = user.uid;
       //console.log(JSON.stringify(data))
       //console.log("cur " + currentUser)
@@ -223,6 +220,7 @@ function BlitzChartDraw({ data }) {
 
           newOptions.series[3].data = userData
           newOptions.series[0].data = userData
+          newOptions.series[2].data = actualData
           setChartOptions(newOptions)
       
         //0 is drag, 1 is red dot, 2 is actaul, 3 is showing previosuly submit
@@ -238,6 +236,8 @@ function BlitzChartDraw({ data }) {
 
         newOptions.series[3].data = userData
         newOptions.series[0].data = userData
+        newOptions.series[2].data = actualData
+
         setChartOptions(newOptions)
 
         setLocked(false)
