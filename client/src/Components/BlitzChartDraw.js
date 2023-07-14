@@ -15,6 +15,8 @@ if (typeof Highcharts === 'object') {
 }
 
 function BlitzChartDraw({ data }) {
+  var parsedData = JSON.parse(JSON.stringify(data));
+
   const { user } = UserAuth();
   const [expanded, setExpanded] = useState(false);
   const [locked, setLocked] = useState(true)
@@ -180,7 +182,7 @@ function BlitzChartDraw({ data }) {
 
     const setUpPage = () => {
 
-      console.log("SETTING UP PAGE !! ")
+     // console.log("SETTING UP PAGE !! ")
       //console.log("DATA RECIEVED ! " + data.actual)
 
       const actualData = data.actual
@@ -227,7 +229,7 @@ function BlitzChartDraw({ data }) {
         //0 is drag, 1 is red dot, 2 is actaul, 3 is showing previosuly submit
 
       } else {
-        console.log("option 2")
+        //console.log("option 2")
 
         const newOptions = { ...chartOptions };
         newOptions.series[0].visible = true;
@@ -305,7 +307,7 @@ function BlitzChartDraw({ data }) {
             {/* Content of the leaderboard */}
 
             {expanded ? (
-              <Leaderboard data={data}/>
+              <Leaderboard data={parsedData}/>
 
             ) : (
                 <div></div>
