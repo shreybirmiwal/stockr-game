@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { collection, getDoc, setDoc, doc, query, updateDoc } from "firebase/firestore";
 import { UserAuth } from '../context/AuthContext';
 import { db } from '../firebase';
+import Leaderboard from './Leaderboard';
 
 if (typeof Highcharts === 'object') {
   more(Highcharts);
@@ -304,12 +305,7 @@ function BlitzChartDraw({ data }) {
             {/* Content of the leaderboard */}
 
             {expanded ? (
-                <div className='overflow-scroll h-42'>
-                    <div className='bg-gray-800 text-white mt-1 p-5 grid grid-cols-3'>
-                        <h1> Shrey Birmiwal </h1>
-                        <h1> 79.00% </h1>
-                    </div>
-                </div>
+              <Leaderboard data={data}/>
 
             ) : (
                 <div></div>
