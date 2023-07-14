@@ -35,12 +35,9 @@ function BlitzGame() {
 
 
   return (
-    <div className="m-10 flex flex-grow flex-col">
-    <div className="mb-2">
-      <MarketOpenCountdown />
-    </div>
+    <div className="m-10 -mt-2 mb-0 flex flex-grow flex-col overflow-hidden">
 
-    <div className='h-1/4 overflow-scroll'>
+    <div class="max-h-screen overflow-y-auto">
       {docs.map((doc) => (
         <BlitzChartDraw
           key={doc.id}

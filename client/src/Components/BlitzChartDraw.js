@@ -204,9 +204,9 @@ function BlitzChartDraw({ data }) {
     }, []);
   
     return (
-      <div className='mb-16'>
+      <div className=''>
         <div className="flex-grow">
-          <div className="flex flex-row mb-5">
+          <div className="flex flex-row">
             <div className="text-3xl font-bold mt-5">
               <h1>{data.id}</h1>
             </div>
@@ -233,7 +233,7 @@ function BlitzChartDraw({ data }) {
 
   
           <button
-            className="w-full bg-yellow-400 text-black font-bold py-2 mt-10"
+            className="w-full bg-yellow-400 text-black font-bold py-2"
             onClick={toggleExpand}
           >
             {expanded ? 'Collapse' : 'Leaderboard ⬇️'}
