@@ -6,7 +6,8 @@ import {
   signOut,
   onAuthStateChanged,
 } from 'firebase/auth';
-import { auth } from '../firebase';
+import { collection, getDoc, setDoc, doc, query, updateDoc } from "firebase/firestore";
+import { auth, db } from '../firebase';
 
 const AuthContext = createContext();
 
@@ -27,6 +28,14 @@ export const AuthContextProvider = ({ children }) => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
       setUser(currentUser);
       console.log('User', currentUser)
+
+      //upadte users UID thingy
+      const tempEg = `users/${currentUser.uid}`;
+      setDoc(doc(db, tempEg), {
+        username: currentUser.displayName
+      }, {merge : true})
+
+
     });
     return () => {
       unsubscribe();
