@@ -20,6 +20,7 @@ function BlitzChartDraw({ data }) {
 
   const toggleExpand = () => {
     setExpanded(!expanded);
+    //setUpPage()
   };
 
   const handleSubmit = () => {
@@ -118,6 +119,7 @@ function BlitzChartDraw({ data }) {
             draggableX: false,
             draggableY: false,
           },
+          visible:false
         }
       ],
       
@@ -132,13 +134,16 @@ function BlitzChartDraw({ data }) {
       },
     };
 
-    useEffect(() => {
+    const setUpPage = () => {
+
+      console.log("SETTING UP PAGE !! ")
       //console.log("DATA RECIEVED ! " + data.actual)
+
       const actualData = data.actual
-          
+                
       const chart = chartRef.current.chart;
       chart.series[2].setData(actualData); // Update 'Live data' series with actualData
-      
+
       const currentUser = user.uid;
       //console.log(JSON.stringify(data))
       //console.log("cur " + currentUser)
@@ -153,11 +158,11 @@ function BlitzChartDraw({ data }) {
       } else {
         userData = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
       }
-      
+
       //CHECK if market already opened
       var curDate = (data.id).split('-')
       var dateOnly = curDate[0] + "-"+ curDate[1] + "-" + curDate[2]
-      
+
       var targetDate = new Date(dateOnly + 'T09:30:00-04:00'); // Combine the extracted date with the target time (9:30 am)
       //console.log("TARGET  " + targetDate)
       var currentDate = new Date(); // Get the current date and time
@@ -165,28 +170,37 @@ function BlitzChartDraw({ data }) {
       if (currentDate > targetDate) {
         console.log('Locked because it is after market open of that day');
         //LOCK predictions
-        setLocked(true)
+        //setLocked(true)
         
-        const chart = chartRef.current.chart; 
         chart.series[3].setData(userData)
+        chart.series[0].setData(userData)
 
-        chart.series[3].update({
-          visible: true,
-        });
-        chart.series[0].update({
-          visible: false,
-        });
+        chart.series[0].update({visible: false});
+        chart.series[1].update({visible: false});
+        chart.series[2].update({visible: true});
+        chart.series[3].update({visible: true});
 
-
-        //console.log("UPDATED")
-        
+        //0 is drag, 1 is red dot, 2 is actaul, 3 is showing previosuly submit
 
       } else {
-        setLocked(false)
+        console.log("option 2")
+        chart.series[3].setData(userData)
+        chart.series[0].setData(userData)
+        console.log("UPDATING DATA TO " + userData)
+        
+        chart.series[0].update({visible: true,});
+        chart.series[1].update({visible: true,});
+        chart.series[2].update({visible: false,});
+        chart.series[3].update({visible: false,});
+
+        //setLocked(false)
         console.log('unlocked to edit cuz before market open of date.');
       }
 
+    }
 
+    useEffect(() => {
+      setUpPage()
     }, []);
   
     return (
@@ -249,4 +263,5 @@ function BlitzChartDraw({ data }) {
   }
   
   export default BlitzChartDraw;
+  
   

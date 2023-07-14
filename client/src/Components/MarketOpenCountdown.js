@@ -77,9 +77,12 @@ const StockMarketInfo = () => {
     <div >
       <h2>NYSE open: {nextOpeningTime}</h2>
     
+      {/* 
       <div className='bg-yellow-400 p-5 text-gray-800 font-bold mt-5 mb-5'>
          <h2>{countdown} till blitz predictions lock 🔒 </h2>
       </div>
+  */}
+
     </div>
   );
 };
