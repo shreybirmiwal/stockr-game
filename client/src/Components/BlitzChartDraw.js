@@ -41,6 +41,13 @@ function BlitzChartDraw({ data }) {
       });
   };
 
+  const upLimit = () => {
+
+  }
+  const downLimit = () => {
+
+  }
+
   const chartRef = useRef(null);
 
     const options = {
@@ -75,8 +82,8 @@ function BlitzChartDraw({ data }) {
         title: {
           text: "% change",
         },
-        min: -1,
-        max: 1,
+        min: -.5,
+        max: .5,
         resizable: false, // Disable y-axis resizing
         plotLines: [
               ],
@@ -89,8 +96,8 @@ function BlitzChartDraw({ data }) {
           dragDrop: {
             draggableX: false,
             draggableY: true,
-            dragMinY: -1,
-            dragMaxY: 1,
+            dragMinY: -.5,
+            dragMaxY: .5,
             dragPrecisionY: 0.01,
           },
         },{
@@ -170,7 +177,7 @@ function BlitzChartDraw({ data }) {
       if (currentDate > targetDate) {
         console.log('Locked because it is after market open of that day');
         //LOCK predictions
-        //setLocked(true)
+        setLocked(true)
         
         chart.series[3].setData(userData)
         chart.series[0].setData(userData)
@@ -193,7 +200,7 @@ function BlitzChartDraw({ data }) {
         chart.series[2].update({visible: false,});
         chart.series[3].update({visible: false,});
 
-        //setLocked(false)
+        setLocked(false)
         console.log('unlocked to edit cuz before market open of date.');
       }
 
@@ -214,9 +221,23 @@ function BlitzChartDraw({ data }) {
             {locked ? (
                 <div/>
             ) : (
-              <div onClick={handleSubmit} className="bg-gray-600 p-3 flex flex-col w-48 ml-auto text-white hover:bg-black">
-                <h1>Submit/Update Predictions ⚡</h1>
+              <div className='ml-auto flex flex-row'>
+
+                <div onClick={handleSubmit} className="bg-gray-600 p-3  w-48  text-center m-5 text-white hover:bg-black">
+                  <h1>Submit⚡</h1>
+                </div>              
+                
+                <div onClick={upLimit} className="bg-gray-600 p-3  w-48 ml-auto text-center m-5 text-white hover:bg-black">
+                  <h1>⬆️</h1>
+                </div>
+
+                <div onClick={downLimit} className="bg-gray-600 p-3  w-48 ml-auto text-center m-5 text-white hover:bg-black">
+                  <h1>⬇️</h1>
+                </div>
+
               </div>
+
+              
             )}
 
 
