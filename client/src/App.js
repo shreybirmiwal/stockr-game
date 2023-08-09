@@ -6,6 +6,7 @@ import Game from './Pages/Game';
 import Predictions from './Pages/Predictions';
 import Account from './Pages/Account';
 import Home from './Pages/Home';
+import CustomGame from './Pages/CustomGame';
 
 const App = () => {
   return (
@@ -22,6 +23,9 @@ const App = () => {
 
               <Route path="/blitz" element={<Predictions/>}/>
               <Route path="/account" element={<Account/>}/>
+
+              <Route path="/custom-game" element={<CustomGame/>}/>
+
 
             </Routes>
           </Router>
