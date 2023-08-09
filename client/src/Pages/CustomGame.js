@@ -41,9 +41,33 @@ const CustomGame = () => {
   const [authUser, setAuthUser] = useState(null);
 
   const [first_second_third_place, setPos] = useState(["N/A", "N/A", "N/A"])
+  const [first_second_third_place_VAL, setVals] = useState(["N/A", "N/A", "N/A"])
+
+  const getLeaderBoardData = async () => {
+    //Get places:
+    const leaderboardData = await getDoc(doc(db, "fishbowl", "leaderboard"));
+    const leaderboardData1 = leaderboardData.data()
+
+    const sortedKeys = Object.entries(leaderboardData1)
+      .sort(([, valueA], [, valueB]) => valueB - valueA)
+      .map(([key]) => key);
+
+    const sortedValues = Object.entries(leaderboardData1)
+      .sort(([, valueA], [, valueB]) => valueB - valueA)
+      .map(([, value]) => value);
+    
+
+    setPos(sortedKeys)
+    setVals(sortedValues)
+  }
 
   useEffect(() => {
+
     const fetchData = async () => {
+      getLeaderBoardData()
+
+
+
       getDataInitial();
       const user = await new Promise((resolve, reject) => {
         const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -59,17 +83,14 @@ const CustomGame = () => {
         const dataT1 = snap.data()?.[user.uid];
         
         if (dataT1) {
-          console.log("RARARARARARAR");
-          console.log(dataT1);
+
           setAccuracyData(dataT1);
         } else {
-          console.log("Data does not exist");
         }
         
       
 
       } else {
-        console.log("not logged in");
         setAuthUser(null);
       }
     };
@@ -272,7 +293,7 @@ const CustomGame = () => {
         }
 
       setNameInput("")
- 
+      getLeaderBoardData()
 
     setTimeout(() => {
       SetAccuracyPop(score)
@@ -440,15 +461,15 @@ const CustomGame = () => {
 
           <div className='bg-yellow-800 h-1/3 text-center pt-3'>
             <p>3rd Place</p>
-            <p>{first_second_third_place[0]}</p>
+            <p>{first_second_third_place[2]} - {first_second_third_place_VAL[2]}%</p>
           </div>
           <div className='bg-amber-300 h-full text-center pt-3'>
-            <p>3rd Place</p>
-            <p>{first_second_third_place[0]}</p>
+            <p>1rd Place</p>
+            <p>{first_second_third_place[0]} - {first_second_third_place_VAL[0]}%</p>
           </div>
           <div className='bg-zinc-400 h-2/3 text-center pt-3'>
-            <p>3rd Place</p>
-            <p>{first_second_third_place[0]}</p>
+            <p>2rd Place</p>
+            <p>{first_second_third_place[1]} - {first_second_third_place_VAL[1]}%</p>
           </div>
       </div>
 
