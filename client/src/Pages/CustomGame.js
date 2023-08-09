@@ -234,6 +234,7 @@ const CustomGame = () => {
     setTimeout(() => {
       SetAccuracyPop(0)
       setPopOpen(false)
+      getLeaderBoardData()
     }, 2000); // Delay of 2000 milliseconds (2 seconds)
 
   }
@@ -287,13 +288,20 @@ const CustomGame = () => {
         const tempEg = `fishbowl/leaderboard`;
         const docSnap = await getDoc(doc(db, tempEg));
         if(docSnap.exists()){
-          updateDoc(doc(db, tempEg), {
-            [nameInput] : intScore
-          })
+          if(nameInput != ""){
+            updateDoc(doc(db, tempEg), {
+              [nameInput] : intScore
+            })
+          } else {
+            updateDoc(doc(db, tempEg), {
+              "NoName" : intScore
+            })
+          }
+
         }
 
-      setNameInput("")
-      getLeaderBoardData()
+        setNameInput("")
+
 
     setTimeout(() => {
       SetAccuracyPop(score)
