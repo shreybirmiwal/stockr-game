@@ -40,6 +40,8 @@ const CustomGame = () => {
   const [accuracyData, setAccuracyData] = useState([])
   const [authUser, setAuthUser] = useState(null);
 
+  const [first_second_third_place, setPos] = useState(["N/A", "N/A", "N/A"])
+
   useEffect(() => {
     const fetchData = async () => {
       getDataInitial();
@@ -432,6 +434,22 @@ const CustomGame = () => {
           </div>
         </div>
 
+      </div>
+
+      <div className="p-5 ml-64 text-2xl font-bold h-80 grid grid-cols-3 flex items-end">
+
+          <div className='bg-yellow-800 h-1/3 text-center pt-3'>
+            <p>3rd Place</p>
+            <p>{first_second_third_place[0]}</p>
+          </div>
+          <div className='bg-amber-300 h-full text-center pt-3'>
+            <p>3rd Place</p>
+            <p>{first_second_third_place[0]}</p>
+          </div>
+          <div className='bg-zinc-400 h-2/3 text-center pt-3'>
+            <p>3rd Place</p>
+            <p>{first_second_third_place[0]}</p>
+          </div>
       </div>
 
 
